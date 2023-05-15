@@ -1,0 +1,30 @@
+
+.inp{
+    box-shadow: 2px 1px 2px 1px rgb(202, 190, 190);
+    width: 20vw;
+    margin-top: 0.8rem;
+}
+
+@media screen and (max-width:1180px){
+    .btn-add
+    {
+        width: 0w;
+        // font-size:1vw;
+    }
+    
+}
+.btn-pencil{
+    width: 2vw;
+    margin-right: 0.5em;
+    border-radius: 8px;
+    background-color:#198754;
+    color: white;
+}
+.btn-delete
+{
+    width: 1.8vw;
+    margin-right: 0.5em;
+    border-radius: 8px;
+    background-color:#dc3545;
+    color: white;
+}
