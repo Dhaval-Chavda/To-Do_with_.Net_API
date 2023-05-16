@@ -27,21 +27,21 @@
 
 <nav class="navbar navbar-expand-lg mt-4">
     <div class="container">
-        <div class="">
-            <img src="/assets/Gurukul-international-school-low-quality2.webp" alt="" style="height: 5vh;">
+        <div>
+            <img src="/assets/Gurukul-international-school-low-quality2.webp" alt="" style="height: 5vh;" class="img-logo">
         </div>
 
         <div class="mx-auto mt-2">
-            <div class="input-group mb-3 inp ">
-                <input type="text" class="form-control fw-bold" placeholder="Type to Search..." aria-label="Recipient's username" aria-describedby="button-addon2" type="search">
-                <button class="btn btn-secondary" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+            <div class="input-group mb-3 ">
+                <input type="text" class="form-control fw-bold inp-srch" placeholder="Type to Search..." aria-label="Recipient's username" aria-describedby="button-addon2" type="search">
+                <button class="btn btn-secondary btn-srch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
               </div>
         </div>
 
         <div>
 
             <div class="mt-1">
-                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-plus-circle me-1 fs-5"></i>Add
+                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-plus-circle me-1"></i>Add
                     Task</button>
             </div>
 
@@ -59,21 +59,38 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLabel">T-Do</h5>
+            <input type="text" class="form-control inp2" id="recipient-name" placeholder="Title" (keyup.enter)="addTask()" [(ngModel)]="task.title1">
           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
         </div>
         <div class="modal-body">
-            <form>
-            <div class="mb-3">
-                <label for="recipient-name" class="col-form-label">Add Task:</label>
-                <input type="text" class="form-control" id="recipient-name">
-              </div>
-            </form>
+           
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+
+                            <ul class="list-group list-group-flush overflow-auto"
+
+                                *ngFor="let inner of task.taskList; let i = index;">
+                                <li class="list-group-item d-flex">
+                                    
+                                    <input type="checkbox" class="me-3" [(ngModel)]="inner.checkbox">
+                                    
+                                    <input type="text" class=" ps-2 itemAddBtn form-control w-75" placeholder="+ add items"
+
+                                        [(ngModel)]="inner.taskName" (keyup.enter)="addBlankItem()">
+
+                                        <!-- <i class="bi bi-x fs-3 ms-3" (click)="deleteRow(i)"></i> -->
+                                </li>
+                                
+                            </ul>
+                        </li>
+
+                        <li class="list-group-item"></li>
+                        <i class="bi bi-arrow-right-square-fill fs-2" (click)="addTask()"></i>
+                    </ul>
+             
+
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Submit</button>
-        </div>
+       
       </div>
     </div>
   </div>
@@ -87,130 +104,34 @@
 
 <div class="container">
     <div class="row ">
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center">
+        <ng-container *ngFor="let item of alltask">
+        
+        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center mt-5" >
 
             <div class="card border-dark mb-3 mt-5" style="width: 18rem;">
-                <div class="card-header bg-transparent fw-bold d-flex justify-content-between">Task - 1
+                <div class="card-header text-light fw-bold d-flex justify-content-between " style="background-color:rgb(48, 41, 41);" >{{item.title1}}
                     <span class="icon1">
-                        <button class="btn-pencil"><i class="bi bi-pencil me-3"></i></button><button class="btn-delete"><i class="bi bi-trash-fill"></i></button>
+                        <button class="btn-pencil btn btn-success"><i class="bi bi-pencil-square"></i></button><button class="btn-delete btn btn-danger"><i class="bi bi-trash-fill"></i></button>
                     </span>
                 </div>
-                <div class="card-body text-success">
+
+                <ng-container *ngFor="let itemData of item.taskList">
+                
+                <div class="card-body text-dark fw-bold">
                     <div class="form-check">
                         <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
+                        <label class="form-check-label" for="flexCheckDefault" style="width: 100%;">{{itemData.taskName}}</label>
+                    </div> 
                 </div>
+            </ng-container>
                 <div class="card-footer bg-transparent ">15/5/2023</div>
               </div>
 
-        </div>
-
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center">
-
-            <div class="card border-dark mb-3 mt-5" style="width: 18rem;">
-                <div class="card-header bg-transparent  fw-bold d-flex justify-content-between">Task - 2
-                    <span class="icon1">
-                        <button class="btn-pencil"><i class="bi bi-pencil me-3"></i></button><button class="btn-delete"><i class="bi bi-trash-fill"></i></button>
-                    </span>
-                </div>
-                <div class="card-body text-success">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent ">15/5/2023</div>
-              </div>
-
-        </div>
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center">
-
-            <div class="card border-dark mb-3 mt-5" style="width: 18rem;">
-                <div class="card-header bg-transparent  fw-bold d-flex justify-content-between">Task - 2
-                    <span class="icon1">
-                        <button class="btn-pencil"><i class="bi bi-pencil me-3"></i></button><button class="btn-delete"><i class="bi bi-trash-fill"></i></button>
-                    </span>
-                </div>
-                <div class="card-body text-success">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent ">15/5/2023</div>
-              </div>
-
-        </div>
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center">
-
-            <div class="card border-dark mb-3 mt-5" style="width: 18rem;">
-                <div class="card-header bg-transparent  fw-bold d-flex justify-content-between">Task - 2
-                    <span class="icon1">
-                        <button class="btn-pencil"><i class="bi bi-pencil-square"></i></button><button class="btn-delete"><i class="bi bi-trash-fill"></i></button>
-                    </span>
-                </div>
-                <div class="card-body text-success">
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                    <div class="form-check">
-                        <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" for="flexCheckDefault">ABC</label>
-                    </div>
-                </div>
-                <div class="card-footer bg-transparent ">15/5/2023</div>
-              </div>
+           
 
         </div>
 
-          
+        </ng-container>
 
-     
     </div>
 </div>
