@@ -19,12 +19,20 @@ export class ToDo3Service{
     return this.http.get<Array<DynamicGrid>>(this.jsonURL);
   }
 
+  deletetask(data:DynamicGrid)
+  {
+    return this.http.delete(this.jsonURL+'/'+data.id)
+  }
+  updatetask(body:any)
+  {
+    return this.http.put(`${this.jsonURL}/${body.id}`, body);
+  }
 }
 
 export class DynamicGrid
 {
   id?:number;
-  title1?:string;
+  taskTitle?:string;
   taskList?: Array<TaskDetails> = new Array<TaskDetails>();
 }
 

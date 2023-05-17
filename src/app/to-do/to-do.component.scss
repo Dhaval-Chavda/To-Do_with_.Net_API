@@ -192,3 +192,14 @@ padding: 0;
     }
     
 }
+
+#cbox3:checked + label {
+    color:blue;
+    text-decoration: line-through;
+  }
+
+.card-footer
+{
+    font-size: 0.8em;
+}
+  

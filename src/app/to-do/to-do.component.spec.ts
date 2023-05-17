@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ToDoComponent } from './to-do.component';
+import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { ToastrModule } from 'ngx-toastr';
+import { FormsModule } from '@angular/forms';
 
 describe('ToDoComponent', () => {
   let component: ToDoComponent;
@@ -8,7 +11,18 @@ describe('ToDoComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ToDoComponent ]
+
+      declarations: [ ToDoComponent ],
+      imports:[
+        HttpClientModule,
+        FormsModule,
+        ToastrModule.forRoot()
+      ],
+      providers:[
+        HttpClient
+      ]
+
+      
     })
     .compileComponents();
 

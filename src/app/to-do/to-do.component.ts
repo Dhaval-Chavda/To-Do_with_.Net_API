@@ -13,7 +13,10 @@ export class ToDoComponent implements OnInit{
 alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
 // taskDetails!: TaskDetails;
 
-task!: DynamicGrid;
+  task!: DynamicGrid;
+  searchValue: any;
+  update: boolean;
+  date: Date = new Date();
 
 constructor (private toastr: ToastrService, private api: ToDo3Service) {}
 
@@ -46,10 +49,12 @@ addTask(){
   this.api.addData(this.task).subscribe({
     next: (res) => {console.log(res)
     this.getTask();
+    this.task = new DynamicGrid;
     },
 
     error: (err) => {console.log(err)},
-    complete: () => {console.log('Success')}
+    complete: () => {console.log('Success')
+    this.toastr.success('Add Task Successfully...',);}
   })
 }
 
@@ -61,6 +66,59 @@ getTask(){
     error: (err) => {console.log(err)},
     complete: () => {console.log('Success')}
   })
+}
+deletetask(data: DynamicGrid) {
+  this.api.deletetask(data).subscribe({
+    next: (res: any) => {
+      console.log(res)
+      this.task = new DynamicGrid();
+      this.getTask();
+    },
+    error: (res) => { console.log(res); },
+    complete: () => { this.toastr.success('Delete Task Successfully...',);
+    }
+  })
+}
+
+fillData(i: any) {
+
+  this.task = i;
+  this.update = true;
+}
+
+upDateData() {
+  this.api.updatetask(this.task).subscribe({
+    next: (res: any) => {
+
+      this.getTask();
+      this.task = new DynamicGrid();
+      this.update = false;
+      this.toastr.success('Update Task Succesfully..')
+    },
+    error: (err) => { console.log(err) },
+    complete: () => { }
+  })
+}
+
+
+typingSearchData() {
+  if (this.searchValue) {
+    let searchEmployee = new Array<DynamicGrid>();
+    if (this.alltask.length > 0) {
+      for (let emp of this.alltask) {
+        if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
+          searchEmployee.push(emp);
+        }
+      }
+      this.alltask = searchEmployee;
+    }
+    else {
+      this.getTask();
+    }
+  }
+  else {
+    this.getTask();
+  }
 }
 
 }  
