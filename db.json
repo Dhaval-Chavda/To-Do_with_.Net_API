@@ -3,49 +3,33 @@
     {
       "taskList": [
         {
-          "taskName": "wqdd",
-          "checkbox": true
+          "taskName": "Cloth"
         },
         {
-          "taskName": "wefwe",
-          "checkbox": true
+          "taskName": "table"
+        },
+        {
+          "taskName": "books"
         }
       ],
-      "taskTitle": "qww",
-      "id": 3
+      "taskTitle": "Shopping",
+      "id": 1
     },
     {
       "taskList": [
         {
-          "taskName": "ttttt"
+          "checkbox": false,
+          "taskName": "fruits"
         },
         {
-          "taskName": "yyyyy"
-        }
-      ],
-      "taskTitle": "qwwqw",
-      "id": 5
-    },
-    {
-      "taskList": [
-        {
-          "taskName": "ttt"
+          "taskName": "vagetables"
         },
         {
-          "taskName": "we3e"
+          "taskName": "snacks"
         }
       ],
-      "taskTitle": "wqwww",
-      "id": 6
-    },
-    {
-      "taskList": [
-        {
-          "taskName": "www"
-        }
-      ],
-      "taskTitle": "qqqq",
-      "id": 7
+      "taskTitle": "Food",
+      "id": 2
     }
   ]
 }

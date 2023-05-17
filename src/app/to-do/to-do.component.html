@@ -10,7 +10,7 @@
             <div class="input-group mb-3 ">
                 <input type="text" class="form-control fw-bold inp-srch" (keyup)="typingSearchData()" [(ngModel)]="searchValue" placeholder="Type to Search..." aria-label="Recipient's username" aria-describedby="button-addon2" type="search">
                 <button class="btn btn-secondary btn-srch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
-              </div>
+            </div>
         </div>
 
         <div>
@@ -32,42 +32,45 @@
 
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-            <input type="text" class="form-control inp2" id="recipient-name" placeholder="Title" (keyup.enter)="addTask()" [(ngModel)]="task.taskTitle">
-          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        <div class="modal-content">
+            <div class="modal-header">
+                <input type="text" class="form-control inp2" id="recipient-name" placeholder="Title"
+                    (keyup.enter)="addTask()" [(ngModel)]="task.taskTitle">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+
+                        <ul class="list-group list-group-flush overflow-auto"
+                            *ngFor="let inner of task.taskList; let i = index;">
+                            <li class="list-group-item d-flex">
+
+                                <input type="checkbox" class="me-3" [(ngModel)]="inner.checkbox">
+
+                                <input type="text" class=" ps-2 itemAddBtn form-control w-75" placeholder="+ add items"
+                                    [(ngModel)]="inner.taskName" (keyup.enter)="addBlankItem()">
+
+                                <i class="bi bi-trash-fill d-flex align-items-center ms-2"></i>
+
+
+
+                            </li>
+
+                        </ul>
+                    </li>
+
+                    <li class="list-group-item "></li>
+                    <i class="bi bi-arrow-right-square-fill fs-2" (click)="addTask()" data-bs-dismiss="modal"></i>
+                </ul>
+
+
+            </div>
+
         </div>
-        <div class="modal-body">
-           
-                    <ul class="list-group list-group-flush">
-                        <li class="list-group-item">
-
-                            <ul class="list-group list-group-flush overflow-auto"
-
-                                *ngFor="let inner of task.taskList; let i = index;">
-                                <li class="list-group-item d-flex">
-                                    
-                                    <input type="checkbox" class="me-3" [(ngModel)]="inner.checkbox">
-                                    
-                                    <input type="text" class=" ps-2 itemAddBtn form-control w-75" placeholder="+ add items"
-
-                                        [(ngModel)]="inner.taskName" (keyup.enter)="addBlankItem()">
-
-                                </li>
-                                
-                            </ul>
-                        </li>
-
-                        <li class="list-group-item "></li>
-                        <i class="bi bi-arrow-right-square-fill fs-2" (click)="addTask()" data-bs-dismiss="modal"></i>
-                    </ul>
-             
-
-        </div>
-       
-      </div>
     </div>
-  </div>
+</div>
 
 
 
@@ -79,33 +82,42 @@
 <div class="container">
     <div class="row ">
         <ng-container *ngFor="let item of alltask">
-        
-        <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center mt-5" >
 
-            <div class="card border-dark mb-3 mt-5 " style="width: 18rem;">
-                <div class="card-header text-light fw-bold d-flex justify-content-between " style="background-color:rgb(48, 41, 41);" >{{item.taskTitle}}
-                    <span class="icon1">
-                        <button class="btn-pencil btn btn-success" (click)="fillData(item)"><i class="bi bi-pencil-square"></i></button>
-                        <button class="btn-delete btn btn-danger" (click)="deletetask(item)"><i class="bi bi-trash-fill"></i></button>
-                    </span>
+            <div class="col-xxl-3 col-xl-3 col-lg-3 col-sm-3 col-md-6 col-12  d-flex justify-content-center mt-5">
+
+                <div class="card border-dark mb-3 mt-5 " style="width: 18rem; height: 20rem; overflow: scroll;">
+                    <div class="card-header text-light fw-bold d-flex justify-content-between "
+                        style="background-color:rgb(48, 41, 41);">{{item.taskTitle}}
+                        <span class="icon1">
+                            <button class="btn-pencil btn btn-success" data-bs-toggle="modal" data-bs-target="#modal"
+                                (click)="fillData(item)"><i class="bi bi-pencil-square"></i></button>
+                            <button class="btn-delete btn btn-danger" (click)="deletetask(item)"><i
+                                    class="bi bi-trash-fill"></i></button>
+                        </span>
+                    </div>
+
+                    <ng-container *ngFor="let itemData of item.taskList">
+
+                        <div class="card-body text-dark fw-bold">
+                            <div class="form-check d-flex">
+                                <input class="form-check-input" id="cbox3" [checked]="itemData.checkbox" type="checkbox"
+                                    value="" id="flexCheckDefault">
+                                <label class="form-check-label ms-3" *ngIf="!itemData.checkbox" for="flexCheckDefault"
+                                    style="width: 100%;">{{itemData.taskName}}</label>
+                                <label class="form-check-label" *ngIf="itemData.checkbox" for="cbox3"
+                                    style="width: 100%;"><del>{{itemData.taskName}}</del></label>
+                                <i class="bi bi-x-lg"></i>
+
+                            </div>
+                        </div>
+
+                    </ng-container>
+                    <div class="card-footer bg-transparent text-muted">{{date.toDateString()}}</div>
                 </div>
 
-                <ng-container *ngFor="let itemData of item.taskList" >
-                
-                <div class="card-body text-dark fw-bold">
-                    <div class="form-check ">
-                        <input class="form-check-input" id="cbox3" [checked]="itemData.checkbox" type="checkbox" value="" id="flexCheckDefault">
-                        <label class="form-check-label" *ngIf="!itemData.checkbox" for="flexCheckDefault" style="width: 100%;">{{itemData.taskName}}</label>
-                        <label class="form-check-label" *ngIf="itemData.checkbox" for="cbox3" style="width: 100%;"><del>{{itemData.taskName}}</del></label>
-                    </div> 
-                </div>
-            </ng-container>
-                <div class="card-footer bg-transparent text-muted">{{date.toDateString()}}</div>
-              </div>
 
-           
 
-        </div>
+            </div>
 
         </ng-container>
 
