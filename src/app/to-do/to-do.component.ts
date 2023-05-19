@@ -16,7 +16,9 @@ alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
   task!: DynamicGrid;
   searchValue: any;
   update: boolean=true;
+  clr = false;
   date: Date = new Date();
+  getlistArray: DynamicGrid;
  
 constructor (private toastr: ToastrService, private api: ToDo3Service) {}
 
@@ -51,6 +53,7 @@ addTask(){
   this.api.addData(this.task).subscribe({
     next: (res) => {console.log(res)
     this.getTask();
+    this.addBlankItem();
     this.task = new DynamicGrid;
     },
 
@@ -63,7 +66,6 @@ addTask(){
 getTask(){
   this.api.getData().subscribe({
     next:(res)=>{console.log(res)
-    
       this.alltask = res},
     error: (err) => {console.log(err)},
     complete: () => {console.log('Success')}
@@ -123,6 +125,15 @@ typingSearchData() {
   else {
     this.getTask();
   }
+}
+clearData()
+{
+  
+  this.clr = true;
+  this.getTask();
+  this.update= false;
+  this.task = new DynamicGrid;
+  this.addBlankItem();
 }
 
 

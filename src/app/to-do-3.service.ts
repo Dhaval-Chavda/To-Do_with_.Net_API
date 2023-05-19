@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class ToDo3Service{
 
   jsonURL = 'http://localhost:3000/TASK';
+  splice: any;
   
   constructor(private http: HttpClient) { }
 

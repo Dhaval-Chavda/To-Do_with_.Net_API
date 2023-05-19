@@ -1,4 +1,4 @@
-<!-- ========================================================   Top Bar Content =============================================================-->
+<!-- ========================================================   Top Bar Content =============================================================================-->
 
 <nav class="navbar navbar-expand-lg mt-4">
     <div class="container">
@@ -16,7 +16,7 @@
         <div>
 
             <div class="mt-1">
-                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-plus-circle me-1"></i>Add
+                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-plus-circle me-1" ></i>Add
                     Task</button>
             </div>
 
@@ -27,7 +27,7 @@
 
 
 
-<!--==========================================================================  Modal  ==========================================================-->
+<!--==========================================================================  Modal  ==========================================================================-->
 
 
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,8 +35,8 @@
         <div class="modal-content">
             <div class="modal-header">
                 <input type="text" class="form-control inp2" id="recipient-name" placeholder="Title"
-                    (keyup.enter)="addTask()" [(ngModel)]="task.taskTitle">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    (keyup.enter)="addTask()" [(ngModel)]="task.taskTitle" >
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="clearData()"></button>
             </div>
             <div class="modal-body">
 
@@ -76,7 +76,7 @@
 
 
 
-<!-- ===================================================================  Task Content Cards   ==============================================================-->
+<!-- ===================================================================  Task Content Cards   ========================================================================-->
 
 
 <div class="container">
@@ -106,6 +106,7 @@
                                     style="width: 100%;">{{itemData.taskName}}</label>
                                 <label class="form-check-label" *ngIf="itemData.checkbox" for="cbox3"
                                     style="width: 100%;"><del>{{itemData.taskName}}</del></label>
+
                                 <i class="bi bi-x-lg"></i>
 
                             </div>

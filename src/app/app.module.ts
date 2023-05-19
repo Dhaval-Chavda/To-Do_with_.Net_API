@@ -7,6 +7,7 @@ import { ToDoComponent } from './to-do/to-do.component';
 import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 
 
@@ -20,7 +21,8 @@ import { ToastrModule } from 'ngx-toastr';
     AppRoutingModule,
     FormsModule,
     HttpClientModule,
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    BrowserAnimationsModule
     
     
   ],
