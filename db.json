@@ -1,67 +1,16 @@
 {
   "TASK": [
     {
-      "taskList": [
+      "tasks": [
         {
-          "taskName": "asas"
+          "name": "yyyyyyyy"
         },
         {
-          "taskName": "asasss"
-        },
-        {
-          "taskName": "reere"
+          "name": "aaaaaaaaa"
         }
       ],
-      "taskTitle": "Shopping",
+      "name": "hhhhhhh",
       "id": 1
-    },
-    {
-      "taskList": [
-        {
-          "taskName": "wqwqw"
-        },
-        {
-          "taskName": "ewe"
-        },
-        {
-          "taskName": "etr"
-        },
-        {
-          "taskName": "yuyu"
-        },
-        {
-          "taskName": "tyutyu"
-        },
-        {
-          "taskName": "tyuytu"
-        }
-      ],
-      "taskTitle": "wwqwqw",
-      "id": 4
-    },
-    {
-      "taskList": [
-        {
-          "taskName": "bat"
-        },
-        {
-          "taskName": "ball"
-        },
-        {
-          "taskName": "stump"
-        }
-      ],
-      "taskTitle": "Playing",
-      "id": 5
-    },
-    {
-      "taskList": [
-        {
-          "taskName": "rtry"
-        }
-      ],
-      "taskTitle": "wewe",
-      "id": 6
     }
   ]
 }

@@ -1,22 +1,31 @@
-<!-- ========================================================   Top Bar Content =============================================================================-->
+
+
+
+<!-- ========================================================   Top Bar Conten   ==============================================================-->
+
 
 <nav class="navbar navbar-expand-lg mt-4">
     <div class="container">
         <div>
-            <img src="/assets/Gurukul-international-school-low-quality2.webp" alt="" style="height: 5vh;" class="img-logo">
+            <img src="/assets/Gurukul-international-school-low-quality2.webp" alt="" style="height: 5vh;"
+                class="img-logo">
         </div>
 
         <div class="mx-auto mt-2">
             <div class="input-group mb-3 ">
-                <input type="text" class="form-control fw-bold inp-srch" (keyup)="typingSearchData()" [(ngModel)]="searchValue" placeholder="Type to Search..." aria-label="Recipient's username" aria-describedby="button-addon2" type="search">
-                <button class="btn btn-secondary btn-srch" type="button" id="button-addon2"><i class="bi bi-search"></i></button>
+                <input type="text" class="form-control fw-bold inp-srch" (keyup)="typingSearchData()"
+                    [(ngModel)]="searchValue" placeholder="Type to Search..." aria-label="Recipient's username"
+                    aria-describedby="button-addon2" type="search">
+                <button class="btn btn-secondary btn-srch" type="button" id="button-addon2"><i
+                        class="bi bi-search"></i></button>
             </div>
         </div>
 
         <div>
 
             <div class="mt-1">
-                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal" data-bs-target="#modal"><i class="bi bi-plus-circle me-1" ></i>Add
+                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal"
+                    data-bs-target="#modal"><i class="bi bi-plus-circle me-1"></i>Add
                     Task</button>
             </div>
 
@@ -27,7 +36,7 @@
 
 
 
-<!--==========================================================================  Modal  ==========================================================================-->
+<!--====================================================================  Modal  ========================================================-->
 
 
 <div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -35,8 +44,9 @@
         <div class="modal-content">
             <div class="modal-header">
                 <input type="text" class="form-control inp2" id="recipient-name" placeholder="Title"
-                    (keyup.enter)="addTask()" [(ngModel)]="task.taskTitle" >
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="clearData()"></button>
+                    [(ngModel)]="task.name">
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
+                    (click)="clearData()"></button>
             </div>
             <div class="modal-body">
 
@@ -44,15 +54,15 @@
                     <li class="list-group-item">
 
                         <ul class="list-group list-group-flush overflow-auto"
-                            *ngFor="let inner of task.taskList; let i = index;">
+                            *ngFor="let inner of task.tasks let i = index;">
                             <li class="list-group-item d-flex">
 
-                                <input type="checkbox" class="me-3" [(ngModel)]="inner.checkbox">
+                                <input type="checkbox" class="me-3" [(ngModel)]="inner.isCompleted">
 
                                 <input type="text" class=" ps-2 itemAddBtn form-control w-75" placeholder="+ add items"
-                                    [(ngModel)]="inner.taskName" (keyup.enter)="addBlankItem()">
+                                    [(ngModel)]="inner.name" (keyup.enter)="addBlankItem()">
 
-                                <i class="bi bi-trash-fill d-flex align-items-center ms-2"></i>
+                                <i class="bi bi-trash-fill d-flex align-items-center ms-2" (click)="removeBlankItem(i)"></i>
 
 
 
@@ -61,9 +71,12 @@
                         </ul>
                     </li>
 
-                    <li class="list-group-item "></li>
-                    <i class="bi bi-arrow-right-square-fill fs-2" (click)="addTask()" data-bs-dismiss="modal"></i>
-                </ul>
+                    <!-- <li class="list-group-item "></li> -->
+                    <!-- <button data-bs-dismiss="modal" (click)="update ? addTask() : upDateData()">{{ update ? "Add" : "Update" }}</button> -->
+
+                    <i *ngIf="update" data-bs-dismiss="modal" (click)="addTask()" class="bi bi-arrow-right-square-fill fs-2 w-25"></i>
+                    <i *ngIf="!update" data-bs-dismiss="modal" (click)="upDateData()" class="bi bi-pencil-square fs-2"></i>
+               </ul>
 
 
             </div>
@@ -74,9 +87,7 @@
 
 
 
-
-
-<!-- ===================================================================  Task Content Cards   ========================================================================-->
+<!-- ================================================================  Task Content Cards ============================================-->
 
 
 <div class="container">
@@ -87,7 +98,7 @@
 
                 <div class="card border-dark mb-3 mt-5 " style="width: 18rem; height: 20rem; overflow: scroll;">
                     <div class="card-header text-light fw-bold d-flex justify-content-between "
-                        style="background-color:rgb(48, 41, 41);">{{item.taskTitle}}
+                        style="background-color:rgb(48, 41, 41);">{{item.name}}
                         <span class="icon1">
                             <button class="btn-pencil btn btn-success" data-bs-toggle="modal" data-bs-target="#modal"
                                 (click)="fillData(item)"><i class="bi bi-pencil-square"></i></button>
@@ -96,18 +107,18 @@
                         </span>
                     </div>
 
-                    <ng-container *ngFor="let itemData of item.taskList">
+                    <ng-container *ngFor="let itemData of item.tasks; let i = index">
 
                         <div class="card-body text-dark fw-bold">
                             <div class="form-check d-flex">
-                                <input class="form-check-input" id="cbox3" [checked]="itemData.checkbox" type="checkbox"
+                                <input class="form-check-input" id="cbox3" [checked]="itemData.isCompleted" type="checkbox"
                                     value="" id="flexCheckDefault">
-                                <label class="form-check-label ms-3" *ngIf="!itemData.checkbox" for="flexCheckDefault"
-                                    style="width: 100%;">{{itemData.taskName}}</label>
-                                <label class="form-check-label" *ngIf="itemData.checkbox" for="cbox3"
-                                    style="width: 100%;"><del>{{itemData.taskName}}</del></label>
+                                <label class="form-check-label ms-3" *ngIf="!itemData.isCompleted" for="flexCheckDefault"
+                                    style="width: 100%;">{{itemData.name}}</label>
+                                <label class="form-check-label" *ngIf="itemData.isCompleted" for="cbox3"
+                                    style="width: 100%;"><del>{{itemData.name}}</del></label>
 
-                                <i class="bi bi-x-lg"></i>
+                                <i class="bi bi-x-lg" (click)="removeBlankItem(i)"></i>
 
                             </div>
                         </div>

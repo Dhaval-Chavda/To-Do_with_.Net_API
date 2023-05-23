@@ -7,6 +7,7 @@ import { Injectable } from '@angular/core';
 export class ToDo3Service{
 
   jsonURL = 'http://localhost:3000/TASK';
+
   splice: any;
   
   constructor(private http: HttpClient) { }
@@ -24,21 +25,25 @@ export class ToDo3Service{
   {
     return this.http.delete(this.jsonURL+'/'+data.id)
   }
-  updatetask(body:any)
+  updatetask(data:DynamicGrid)
   {
-    return this.http.put(`${this.jsonURL}/${body.id}`, body);
+    return this.http.put(`${this.jsonURL}/${data.id}`,data);
   }
+
+
 }
 
 export class DynamicGrid
 {
   id?:number;
-  taskTitle?:string;
-  taskList?: Array<TaskDetails> = new Array<TaskDetails>();
+  todoid?:number;
+  name?:string;
+  // addedOn: Date;
+  tasks?: Array<TaskDetails> = new Array<TaskDetails>();
 }
 
 export class TaskDetails
 {
-  checkbox?:boolean;
-  taskName?: string;
+  isCompleted?:boolean;
+  name?: string;
 }

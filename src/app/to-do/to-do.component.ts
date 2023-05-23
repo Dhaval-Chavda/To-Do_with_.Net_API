@@ -8,133 +8,163 @@ import { ToastrService } from 'ngx-toastr';
   templateUrl: './to-do.component.html',
   styleUrls: ['./to-do.component.scss']
 })
-export class ToDoComponent implements OnInit{
- 
-alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
-// taskDetails!: TaskDetails;
+export class ToDoComponent implements OnInit {
+
+  alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
+  // taskDetails!: TaskDetails;
 
   task!: DynamicGrid;
   searchValue: any;
-  update: boolean=true;
+  update: boolean = true;
   clr = false;
   date: Date = new Date();
-  getlistArray: DynamicGrid;
- 
-constructor (private toastr: ToastrService, private api: ToDo3Service) {}
 
-  dynamicArray: Array<DynamicGrid> = [];  
+
+  constructor(private toastr: ToastrService, private api: ToDo3Service) { }
+
+  dynamicArray: Array<DynamicGrid> = [];
   newDynamic: any = {};
 
-  
+
   ngOnInit(): void {
-      this.task = new DynamicGrid;
-      this.task.taskList = new Array<TaskDetails>;
-      this.dynamicArray.push(this.newDynamic); 
+    this.task = new DynamicGrid;
+    this.task.tasks = new Array<TaskDetails>;
+    this.dynamicArray.push(this.newDynamic);
 
-      this.getTask();
-      this.addBlankItem();
-      
-      
-  }
-
-  addBlankItem(){
-    this.task.taskList.push(new TaskDetails());
-  }
-
-  removeBlankItem(i){
-  
-    this.task.taskList.splice(i, 1)
-  }
-
-
-// add & get methos
-
-addTask(){
-  this.api.addData(this.task).subscribe({
-    next: (res) => {console.log(res)
     this.getTask();
     this.addBlankItem();
-    this.task = new DynamicGrid;
-    },
 
-    error: (err) => {console.log(err)},
-    complete: () => {console.log('Success')
-    this.toastr.success('Add Task Successfully...',);}
-  })
-}
 
-getTask(){
-  this.api.getData().subscribe({
-    next:(res)=>{console.log(res)
-      this.alltask = res},
-    error: (err) => {console.log(err)},
-    complete: () => {console.log('Success')}
-  })
-}
-deletetask(data: DynamicGrid) {
-  this.api.deletetask(data).subscribe({
-    next: (res: any) => {
-      console.log(res)
-      this.getTask();
+  }
 
-      this.task = new DynamicGrid();
-     
-    },
-    error: (res) => { console.log(res); },
-    complete: () => { this.toastr.success('Delete Task Successfully...');
+  addBlankItem() {
+    this.task.tasks.push(new TaskDetails());
+  }
+
+  removeBlankItem(i) {
+    if(this.task.tasks.length != 1){
+      this.task.tasks.splice(i, 1)
     }
-  })
-}
 
-fillData(i: any) {
-
-  this.task = i;
-  this.update = true;
-}
-
-upDateData() {
-  this.api.updatetask(this.task).subscribe({
-    next: (res: any) => {
-
-      this.getTask();
-      this.task = new DynamicGrid();
-      this.update = false;
-      
-    },
-    error: (err) => { console.log(err) },
-    complete: () => {this.toastr.success('Update Task Succesfully..')}
-  })
-}
+  }
 
 
-typingSearchData() {
-  if (this.searchValue) {
-    let searchEmployee = new Array<DynamicGrid>();
-    if (this.alltask.length > 0) {
-      for (let emp of this.alltask) {
-        if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
-          searchEmployee.push(emp);
-        }
+  // add data method
+
+  addTask() {
+    this.api.addData(this.task).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.getTask();
+        this.task = new DynamicGrid;
+        this.addBlankItem();
+      },
+
+      error: (err) => { console.log(err) },
+      complete: () => {
+        console.log('Success')
+        this.toastr.success('Add Task Successfully...',);
       }
-      this.alltask = searchEmployee;
+    })
+  }
+
+  // removeTask(id, body) {
+  //   this.alltask.filter(x => {
+  //     let a = x.tasks
+  //     a.splice(id, 1)
+  //   })
+  // }
+
+  // get data method
+
+  getTask() {
+    this.api.getData().subscribe({
+      next: (res) => {
+        console.log(res)
+        this.alltask = res
+      },
+      error: (err) => { console.log(err) },
+      complete: () => { console.log('Success get Data') }
+    })
+  }
+
+  // delete task method
+
+  deletetask(data: DynamicGrid) {
+    this.api.deletetask(data).subscribe({
+      next: (res: any) => {
+        console.log(res)
+        this.getTask();
+        this.task = new DynamicGrid();
+        this.addBlankItem();
+
+      },
+      error: (res) => { console.log(res); },
+      complete: () => {
+        this.toastr.success('Delete All task Successfully...');
+      }
+    })
+  }
+
+
+
+
+
+  // Fill Data And Update Method 
+
+  fillData(data:DynamicGrid) {
+    this.task = data;
+    this.update = false;
+  }
+
+  upDateData() {
+    this.api.updatetask(this.task).subscribe({
+      next: (res: any) => {
+        this.getTask();
+        this.task = new DynamicGrid();
+        this.update = true;
+        this.addBlankItem();
+        console.log(res);
+
+      },
+      error: (err) => { console.log(err) },
+      complete: () => { this.toastr.success('Update Task Succesfully..') }
+    })
+  }
+
+
+  // Searching Method in type
+
+  typingSearchData() {
+    if (this.searchValue) {
+      let searchEmployee = new Array<DynamicGrid>();
+      if (this.alltask.length > 0) {
+        for (let emp of this.alltask) {
+          if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
+            searchEmployee.push(emp);
+          }
+        }
+        this.alltask = searchEmployee;
+      }
+      else {
+        this.getTask();
+      }
     }
     else {
       this.getTask();
     }
   }
-  else {
+
+  // Clear Data
+
+  clearData() {
+
+    this.clr = true;
     this.getTask();
+    this.update = false;
+    this.task = new DynamicGrid;
+    this.addBlankItem();
   }
-}
-clearData()
-{
-  
-  this.clr = true;
-  this.getTask();
-  this.update= false;
-  this.task = new DynamicGrid;
-  this.addBlankItem();
-}
 
 
 }  
