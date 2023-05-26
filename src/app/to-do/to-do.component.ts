@@ -11,14 +11,30 @@ import { ToastrService } from 'ngx-toastr';
 export class ToDoComponent implements OnInit {
 
   alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
-  // taskDetails!: TaskDetails;
 
   task!: DynamicGrid;
+  innernew:TaskDetails;
+
+  //searching variables
+
   searchValue: any;
+
+  //update
+
   update: boolean = true;
+
+  // clear data
+
   clr = false;
+
+  //Date
+
   date: Date = new Date();
 
+  showInputField = false;
+
+  inputData: string;
+  addOneItemBtnToogle: boolean = false;
 
   constructor(private toastr: ToastrService, private api: ToDo3Service) { }
 
@@ -28,6 +44,7 @@ export class ToDoComponent implements OnInit {
 
   ngOnInit(): void {
     this.task = new DynamicGrid;
+    this.innernew = new TaskDetails;
     this.task.tasks = new Array<TaskDetails>;
     this.dynamicArray.push(this.newDynamic);
 
@@ -41,8 +58,8 @@ export class ToDoComponent implements OnInit {
     this.task.tasks.push(new TaskDetails());
   }
 
-  removeBlankItem(i) {
-    if(this.task.tasks.length != 1){
+  removeBlankItem(i:any) {
+    if (this.task.tasks.length != 1) {
       this.task.tasks.splice(i, 1)
     }
 
@@ -63,17 +80,29 @@ export class ToDoComponent implements OnInit {
       error: (err) => { console.log(err) },
       complete: () => {
         console.log('Success')
-        this.toastr.success('Add Task Successfully...',);
+        this.toastr.success('Add Task Successfully...');
       }
     })
   }
 
-  // removeTask(id, body) {
-  //   this.alltask.filter(x => {
-  //     let a = x.tasks
-  //     a.splice(id, 1)
-  //   })
-  // }
+  //add inner task
+
+  addinner(todoId)
+  {
+
+    this.innernew.todoId = todoId;
+    this.api.innerData(this.innernew,todoId).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.getTask();
+        this.task = new DynamicGrid;
+        this.addBlankItem();
+      },
+      complete: () => {this.toastr.success('Inner Task Added...')}
+    })
+  }
+
+
 
   // get data method
 
@@ -106,13 +135,36 @@ export class ToDoComponent implements OnInit {
     })
   }
 
+  //inner delete task
+  // removeTask(id) {
+  //   this.api.innerDelete(id).subscribe({
+  //     next: (res) => {
+  //       console.log(res)
+  //       this.getTask();
+  //       this.task = new DynamicGrid();
+  //       this.addBlankItem();
 
+  //     }
+  //   })
+  // }
+
+  // inner delete
+
+  removeTask(todoId,data) {
+    this.api.innerDelete(todoId,data).subscribe({
+      next: (res) => {
+        this.getTask();
+      },
+      // error: (err) => { this.toastr.error('Some error To Delete Task'); },
+      complete: () => { this.toastr.success('Task Delete Successfull'); }
+    })
+  }
 
 
 
   // Fill Data And Update Method 
 
-  fillData(data:DynamicGrid) {
+  fillData(data: DynamicGrid) {
     this.task = data;
     this.update = false;
   }
@@ -120,15 +172,29 @@ export class ToDoComponent implements OnInit {
   upDateData() {
     this.api.updatetask(this.task).subscribe({
       next: (res: any) => {
+        this.updateinner(this.task.id);
         this.getTask();
         this.task = new DynamicGrid();
         this.update = true;
         this.addBlankItem();
-        console.log(res);
+   
 
       },
       error: (err) => { console.log(err) },
       complete: () => { this.toastr.success('Update Task Succesfully..') }
+    })
+  }
+
+  // inner update task
+
+  updateinner(id){
+    
+    this.task.tasks.forEach((el)=>{
+      this.api.innerUpdate(id,el).subscribe({
+        next: (res) =>{console.log(res)
+        this.getTask();
+        }
+      })
     })
   }
 
@@ -164,6 +230,21 @@ export class ToDoComponent implements OnInit {
     this.update = false;
     this.task = new DynamicGrid;
     this.addBlankItem();
+  }
+
+  openInputField(item)
+  {
+    item.isInput = true;
+    this.showInputField = !this.showInputField;
+    if(this.addOneItemBtnToogle)
+    {
+      item.isInput = true;
+      this.addOneItemBtnToogle = false;
+    }
+    else{
+      item.isInput = false;
+      this.addOneItemBtnToogle = true;
+    }
   }
 
 

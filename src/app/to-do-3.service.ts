@@ -6,7 +6,8 @@ import { Injectable } from '@angular/core';
 })
 export class ToDo3Service{
 
-  jsonURL = 'http://localhost:3000/TASK';
+  jsonURL = 'http://10.10.5.124:16100/Todo';
+ 
 
   splice: any;
   
@@ -30,20 +31,43 @@ export class ToDo3Service{
     return this.http.put(`${this.jsonURL}/${data.id}`,data);
   }
 
+  //inner add Task
+
+  innerData(body: TaskDetails, todoId){
+    return this.http.post(`http://10.10.5.124:16100/Todo/${todoId}/task`,body);
+  }
+
+  //Inner Delete Task
+
+  innerDelete(todoId,body:any){
+
+    return this.http.delete(`http://10.10.5.124:16100/Todo/${todoId}/task/${body}`);
+  }
+
+  //inner update
+
+  innerUpdate(todoId:any, data:any)
+  {
+    return this.http.put(`http://10.10.5.124:16100/Todo/${todoId}/task/${data.id}`,data);
+  }
+
 
 }
 
 export class DynamicGrid
 {
   id?:number;
-  todoid?:number;
-  name?:string;
-  // addedOn: Date;
+  
+  name?:string;   //task Title
+  addedOn: Date = new Date();
   tasks?: Array<TaskDetails> = new Array<TaskDetails>();
+  isInput:boolean = false;
 }
 
 export class TaskDetails
 {
-  isCompleted?:boolean;
-  name?: string;
+  id:number;
+  todoId:number;
+  name?: string;   //Task name
+  isCompleted?:boolean = false;
 }
