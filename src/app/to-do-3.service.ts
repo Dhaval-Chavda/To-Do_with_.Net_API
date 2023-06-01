@@ -1,73 +1,72 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { BehaviorSubject } from 'rxjs';
+import { environment } from 'src/evironment/config';
+
 
 @Injectable({
   providedIn: 'root'
 })
-export class ToDo3Service{
 
-  jsonURL = 'http://10.10.5.124:16100/Todo';
- 
+export class ToDo3Service {
 
-  splice: any;
-  
+  isLoader = new BehaviorSubject <boolean>(false);
+  todoApi = environment.todoAPI;
+
   constructor(private http: HttpClient) { }
 
-
-  addData(body: DynamicGrid){
-    return this.http.post(this.jsonURL,body)
+  loderShow() {
+    this.isLoader.next(false);
   }
 
-  getData(){
-    return this.http.get<Array<DynamicGrid>>(this.jsonURL);
+  loderHide() {
+    this.isLoader.next(false);
   }
 
-  deletetask(data:DynamicGrid)
-  {
-    return this.http.delete(this.jsonURL+'/'+data.id)
-  }
-  updatetask(data:DynamicGrid)
-  {
-    return this.http.put(`${this.jsonURL}/${data.id}`,data);
+  addTodo(body: Todo) {
+    return this.http.post(this.todoApi, body)
   }
 
-  //inner add Task
-
-  innerData(body: TaskDetails, todoId){
-    return this.http.post(`http://10.10.5.124:16100/Todo/${todoId}/task`,body);
+  getTodo() {
+    return this.http.get<Array<Todo>>(this.todoApi);
   }
 
-  //Inner Delete Task
-
-  innerDelete(todoId,body:any){
-
-    return this.http.delete(`http://10.10.5.124:16100/Todo/${todoId}/task/${body}`);
+  deleteTodo(data: Todo) {
+    return this.http.delete(`${this.todoApi}/${data.id}`);
   }
 
-  //inner update
-
-  innerUpdate(todoId:any, data:any)
-  {
-    return this.http.put(`http://10.10.5.124:16100/Todo/${todoId}/task/${data.id}`,data);
+  updateTodo(data: Todo) {
+    return this.http.put(`${this.todoApi}/${data.id}`, data);
   }
 
+  // Add Task
+  addTask(body: todoTask, todoId) {
+    return this.http.post(`${this.todoApi}/${todoId}/task`, body);
+  }
 
+  // Delete Task
+  deleteTask(todoId, body: any) {
+
+    return this.http.delete(`${this.todoApi}/${todoId}/task/${body}`);
+  }
+  // Update Task
+  updateTask(todoId: any, data: any) {
+    return this.http.put(`${this.todoApi}/${todoId}/task/${data.id}`, data);
+  }
 }
 
-export class DynamicGrid
-{
-  id?:number;
-  
-  name?:string;   //task Title
+export class Todo {
+  id: number;
+  name: string;     //Todo Title
   addedOn: Date = new Date();
-  tasks?: Array<TaskDetails> = new Array<TaskDetails>();
-  isInput:boolean = false;
+  tasks?: Array<todoTask> = new Array<todoTask>();
+  isInput: boolean = false;
 }
 
-export class TaskDetails
-{
-  id:number;
-  todoId:number;
-  name?: string;   //Task name
-  isCompleted?:boolean = false;
+export class todoTask {
+  id: number;
+  todoId: number;
+  name: string;     //Task Name
+  isCompleted: boolean = false;
+  isInputTask : boolean;
 }

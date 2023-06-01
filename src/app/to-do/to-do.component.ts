@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { DynamicGrid, TaskDetails, ToDo3Service } from '../to-do-3.service';
+import { Todo, todoTask, ToDo3Service } from '../to-do-3.service';
 import { ToastrService } from 'ngx-toastr';
+import { Subject } from 'rxjs';
 
 
 @Component({
@@ -10,242 +11,242 @@ import { ToastrService } from 'ngx-toastr';
 })
 export class ToDoComponent implements OnInit {
 
-  alltask: Array<DynamicGrid> = new Array<DynamicGrid>();
+  //Todo Get all Title Data
+  allGetTodo: Array<Todo> = new Array<Todo>();
 
-  task!: DynamicGrid;
-  innernew:TaskDetails;
-
-  //searching variables
-
+  todo: Todo;
+  //add inner new task
+  addnewTask: todoTask;
+  editTask: todoTask;
+  //searching method property
   searchValue: any;
+  //update Toggle 
+  isUpdate: boolean = true;
+  // clear data after Update
+  clear = false;
 
-  //update
-
-  update: boolean = true;
-
-  // clear data
-
-  clr = false;
-
-  //Date
 
   date: Date = new Date();
 
-  showInputField = false;
-
-  inputData: string;
-  addOneItemBtnToogle: boolean = false;
+  showButton = false;
 
   constructor(private toastr: ToastrService, private api: ToDo3Service) { }
 
-  dynamicArray: Array<DynamicGrid> = [];
-  newDynamic: any = {};
-
-
+  // progress bar 
+  isLoading: Subject<boolean> = this.api.isLoader;
+  
   ngOnInit(): void {
-    this.task = new DynamicGrid;
-    this.innernew = new TaskDetails;
-    this.task.tasks = new Array<TaskDetails>;
-    this.dynamicArray.push(this.newDynamic);
-
-    this.getTask();
-    this.addBlankItem();
-
-
+    this.todo = new Todo;
+    this.addnewTask = new todoTask;
+    this.todo.tasks = new Array<todoTask>;
+    this.getTodo();
+    this.addInput();
   }
+  
 
-  addBlankItem() {
-    this.task.tasks.push(new TaskDetails());
-  }
+  fillTask(task){
+    this.editTask = task;
 
-  removeBlankItem(i:any) {
-    if (this.task.tasks.length != 1) {
-      this.task.tasks.splice(i, 1)
+    if(task.isInputTask){
+      task.isInputTask = false;
     }
-
+    else{
+      task.isInputTask = true;
+    }
   }
 
+  // add new Input Box to add Task
+  addInput() {
+    this.todo.tasks.push(new todoTask());
+  }
 
-  // add data method
+  // remove Input Box & Last One display
+  removeInput(i: any) {
+    if (this.todo.tasks.length != 1) {
+      this.todo.tasks.splice(i, 1)
+    }
+  }
 
-  addTask() {
-    this.api.addData(this.task).subscribe({
+  // add Todo
+
+  addTodo() {
+    if(this.todo.name){
+
+      this.api.loderShow();
+      this.api.addTodo(this.todo).subscribe({
+        next: (res) => {        
+          this.getTodo();
+          this.todo = new Todo;
+          this.addInput();
+        },
+        error: (err) => { console.log(err) },
+        complete: () => {
+          console.log('Success')
+          this.toastr.success('Add Task Successfully...');
+        }
+      })
+    }
+    else
+    {
+      this.toastr.warning('Please Enter Data...');
+    }
+  }
+
+  //add task in Todo
+
+  addTask(todoId) {
+    this.addnewTask.todoId = todoId;
+    this.api.addTask(this.addnewTask, todoId).subscribe({
       next: (res) => {
         console.log(res)
-        this.getTask();
-        this.task = new DynamicGrid;
-        this.addBlankItem();
+        this.getTodo();
+        this.todo = new Todo;
+        this.addInput();
       },
+      error: () => {this.toastr.error('Something Went Wrong...') }, 
+      complete: () => { this.toastr.success('Inner Task Added...') }
+    })
+  }
 
-      error: (err) => { console.log(err) },
-      complete: () => {
-        console.log('Success')
-        this.toastr.success('Add Task Successfully...');
+  isTaskCompleted(todoId,itemData){
+    this.api.updateTask(todoId, itemData).subscribe({
+      next: (res) => {
+        console.log(res)
+        this.getTodo();
       }
     })
   }
-
-  //add inner task
-
-  addinner(todoId)
-  {
-
-    this.innernew.todoId = todoId;
-    this.api.innerData(this.innernew,todoId).subscribe({
-      next: (res) => {
-        console.log(res)
-        this.getTask();
-        this.task = new DynamicGrid;
-        this.addBlankItem();
-      },
-      complete: () => {this.toastr.success('Inner Task Added...')}
-    })
-  }
-
-
 
   // get data method
 
-  getTask() {
-    this.api.getData().subscribe({
+  getTodo() {
+    this.api.loderShow();
+
+    this.api.getTodo().subscribe({
       next: (res) => {
         console.log(res)
-        this.alltask = res
+        this.allGetTodo = res
       },
-      error: (err) => { console.log(err) },
-      complete: () => { console.log('Success get Data') }
+      error: (_err) => {this.api.loderShow()},
+      complete: () => {this.api.loderHide() }
     })
   }
 
-  // delete task method
+  // delete Todo method
 
-  deletetask(data: DynamicGrid) {
-    this.api.deletetask(data).subscribe({
+  deleteTodo(data: Todo) {
+    this.api.deleteTodo(data).subscribe({
       next: (res: any) => {
         console.log(res)
-        this.getTask();
-        this.task = new DynamicGrid();
-        this.addBlankItem();
-
+        this.getTodo();
+        this.todo = new Todo();
+        this.addInput();
       },
-      error: (res) => { console.log(res); },
+      error: (res) => {this.toastr.error('Something Went Wrong...') },
       complete: () => {
-        this.toastr.success('Delete All task Successfully...');
+        this.toastr.success('Delete All Task Successfully...');
       }
     })
   }
 
-  //inner delete task
-  // removeTask(id) {
-  //   this.api.innerDelete(id).subscribe({
-  //     next: (res) => {
-  //       console.log(res)
-  //       this.getTask();
-  //       this.task = new DynamicGrid();
-  //       this.addBlankItem();
+  //delete Task
 
-  //     }
-  //   })
-  // }
-
-  // inner delete
-
-  removeTask(todoId,data) {
-    this.api.innerDelete(todoId,data).subscribe({
+  deleteTask(todoId, data) {
+    this.api.deleteTask(todoId, data).subscribe({
       next: (res) => {
-        this.getTask();
+        this.getTodo();
       },
-      // error: (err) => { this.toastr.error('Some error To Delete Task'); },
-      complete: () => { this.toastr.success('Task Delete Successfull'); }
+      complete: () => { this.toastr.success('Inner Task  Delete Successfully...')}
     })
   }
 
+  /**
+   * This method is used to Edit todo
+   * @param todo new todo 
+   */
 
-
-  // Fill Data And Update Method 
-
-  fillData(data: DynamicGrid) {
-    this.task = data;
-    this.update = false;
+  editTodo(todo: Todo) {
+    this.todo = todo;
+    this.isUpdate = false;
   }
 
-  upDateData() {
-    this.api.updatetask(this.task).subscribe({
-      next: (res: any) => {
-        this.updateinner(this.task.id);
-        this.getTask();
-        this.task = new DynamicGrid();
-        this.update = true;
-        this.addBlankItem();
-   
+  // Update Data
 
+  updateTodo() {
+    this.api.updateTodo(this.todo).subscribe({
+      next: (res: any) => {
+        this.updateTask(this.todo.id);
+        this.getTodo();
+        this.todo = new Todo();
+        this.isUpdate = true;
+        this.addInput();
       },
-      error: (err) => { console.log(err) },
-      complete: () => { this.toastr.success('Update Task Succesfully..') }
+      error: (err) => { this.toastr.success('Something went wrong')},
+      complete: () => { this.toastr.success('Update Task Successfully...') }
     })
   }
 
   // inner update task
 
-  updateinner(id){
-    
-    this.task.tasks.forEach((el)=>{
-      this.api.innerUpdate(id,el).subscribe({
-        next: (res) =>{console.log(res)
-        this.getTask();
+  updateTask(id) {
+
+      this.api.updateTask(id, this.editTask).subscribe({
+        next: (res) => {
+          console.log(res)
+          this.getTodo();
         }
       })
-    })
   }
 
-
-  // Searching Method in type
-
-  typingSearchData() {
+  // Search Todo & Task
+  searchTodo() {
     if (this.searchValue) {
-      let searchEmployee = new Array<DynamicGrid>();
-      if (this.alltask.length > 0) {
-        for (let emp of this.alltask) {
-          if (JSON.stringify(emp).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
-            searchEmployee.push(emp);
+      let searchData = new Array<Todo>();
+      if (this.allGetTodo.length > 0) {
+        // Stringify all tasks and then search
+        for (let srh of this.allGetTodo) {
+          if (JSON.stringify(srh).toLowerCase().indexOf(this.searchValue.toLowerCase()) > 0) {
+            searchData.push(srh);
           }
         }
-        this.alltask = searchEmployee;
+        this.allGetTodo = searchData;
       }
       else {
-        this.getTask();
+        this.getTodo();
       }
     }
-    else {
-      this.getTask();
-    }
-  }
-
-  // Clear Data
-
-  clearData() {
-
-    this.clr = true;
-    this.getTask();
-    this.update = false;
-    this.task = new DynamicGrid;
-    this.addBlankItem();
-  }
-
-  openInputField(item)
-  {
-    item.isInput = true;
-    this.showInputField = !this.showInputField;
-    if(this.addOneItemBtnToogle)
-    {
-      item.isInput = true;
-      this.addOneItemBtnToogle = false;
-    }
     else{
+      this.getTodo();
+    }
+  }
+  // Clear Data after edit data
+
+  clearEditData() {
+
+    this.clear = true;
+    this.getTodo();
+    this.isUpdate = true;
+    this.todo = new Todo;
+    this.addInput();
+  }
+
+  //Open Input to add task
+  openInputField(item) {
+    if (!item.isInput) {
+      item.isInput = true;
+    }
+    else {
       item.isInput = false;
-      this.addOneItemBtnToogle = true;
     }
   }
 
+  showDeleteButton()
+  {
+    this.showButton = true;
+  }
+  hideDeleteButton()
+  {
+    this.showButton = false;
+  }
 
 }  
