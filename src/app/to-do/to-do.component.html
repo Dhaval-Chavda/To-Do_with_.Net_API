@@ -1,98 +1,70 @@
-<!-- ========================================================   Top Bar Content   ==============================================================-->
+<!--================= Progress Bar =============-->
 
 <div *ngIf="isLoading | async" class="overlay">
     <mat-progress-bar mode="indeterminate" class="spinner" color="warn"></mat-progress-bar>
 </div>
 
+
+                                    <!-- ============================================================================================================
+                                                                                    Tool Bar
+                                    =================================================================================================================-->
+
 <mat-toolbar color="primary">
     <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
         <mat-icon>menu</mat-icon>
     </button>
-    <div class="d-flex ms-auto">
-        <span>TODO</span>
-    </div>
+    <span class="title-center">TODO</span>
     <span class="example-spacer"></span>
 
-    <!-- search bar -->
+    <!-- search box -->
     <div class="search-box">
         <button class="btn-search"><i class="material-icons">search</i></button>
         <input type="text" class="input-search" placeholder="Type to Search..." (keyup)="searchTodo()"
             [(ngModel)]="searchValue">
     </div>
-   
-
 </mat-toolbar>
-<nav class="navbar navbar-expand-lg mt-4">
-    <div class="container">
-        <div>
-            <img src="/assets/Gurukul-international-school-low-quality2.webp" alt="" style="height: 5vh;"
-                class="img-logo">
-        </div>
-        <!-- <div class="mx-auto mt-2">
-            <div class="input-group mb-3 ">
-                <input type="text" class="form-control fw-bold inp-srch" (keyup)="searchTodo()"
-                    [(ngModel)]="searchValue" placeholder="Type to Search..." aria-label="Recipient's username"
-                    aria-describedby="button-addon2" type="search">
-                <button class="btn btn-secondary btn-srch" type="button" id="button-addon2"><i
-                        class="bi bi-search"></i></button>
-            </div>
-        </div> -->
-        <div>
-            <div class="mt-1">
-                <button class="btn btn-outline-primary fw-bold btn-add" type="button" data-bs-toggle="modal"
-                    data-bs-target="#modal"><i class="bi bi-plus-circle me-1"></i>Add
-                    Task</button>
-            </div>
-        </div>
-    </div>
-</nav>
 
+                         <!-- ================================================================================================================================
+                                                                                    Accordian of angular
+                              =================================================================================================================================-->
 
-            <!--====================================================================  Modal  ===========================================================-->
+<div class="container mt-5">
+    <div class="row">
+        <div class="col-12 d-flex justify-content-center">
+            <mat-accordion class="">
+             
+                    <div>
+                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                            <mat-expansion-panel-header>
+                                <mat-panel-title class="fs-6 justify-content-center">
+                                    Add Todo
+                                </mat-panel-title>
 
+                            </mat-expansion-panel-header>
+                            <div class="enterTodo">
+                                <mat-form-field appearance="outline" class="addInput">
+                                    <mat-label>Todo</mat-label>
+                                    <input matInput placeholder="Enter Your Todo..." [(ngModel)]="todo.name">
+                                </mat-form-field>
+                                <div class="mt-2">
+                                    <button mat-raised-button color="primary" (click)="addTodo()">Add</button>
+                                </div>
+                            </div>
 
-
-<div class="modal fade" id="modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <input type="text" class="form-control inp2" id="recipient-name" placeholder="Add Todo...."
-                    [(ngModel)]="todo.name">
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"
-                    (click)="clearEditData()"></button>
-            </div>
-            <!-- <div class="modal-body"> -->
-                <!-- <ul class="list-group list-group-flush"> -->
-                    <!-- <li class="list-group-item">
-
-                        <ul class="list-group list-group-flush overflow-auto"
-                            *ngFor="let inner of todo.tasks let i = index;">
-                            <li class="list-group-item d-flex">
-
-                                <input type="checkbox" class="me-3" [(ngModel)]="inner.isCompleted">
-
-                                <input type="text" class=" ps-2 itemAddBtn form-control w-75" placeholder="+ add items"
-                                    [(ngModel)]="inner.name" (keyup.enter)="addInput()">
-
-                                <i class="bi bi-trash-fill d-flex align-items-center ms-2" (click)="removeInput(i)"></i>
-                            </li>
-
-                        </ul>
-                    </li> -->
-                <!-- </ul> -->
-                <div class="m-3">
-                    <i *ngIf="isUpdate" data-bs-dismiss="modal" (click)=" addTodo()"
-                        class="bi bi-arrow-right-square-fill fs-2 w-25"></i>
-                    <i *ngIf="!isUpdate" data-bs-dismiss="modal" (click)="updateTodo()" 
-                        class="bi bi-pencil-square fs-2"></i>
-                </div>
-            <!-- </div> -->
+                        </mat-expansion-panel>
+                    </div>
+               
+            </mat-accordion>
         </div>
     </div>
 </div>
 
 
-                    <!-- ===============================================================  Task Content Cards ===============================================================-->
+
+
+                                    <!-- ============================================================================================================
+                                                                                 Task Content
+                                    =================================================================================================================-->
 
 
 <div class="container">
@@ -100,49 +72,53 @@
         <ng-container *ngFor="let item of allGetTodo">
             <div class="col-xxl-4 col-xl-4 col-lg-4 col-sm-4 col-md-6 col-12  d-flex justify-content-center mt-5">
                 <div class="card border-dark mb-3 mt-5" style="width: 25rem; height: 20rem; ">
-                    <div class="card-header fs-6 text-light fw-bold" style="background-color:rgb(48, 41, 41); ">{{item.name}}
+                    <div class="card-header text-light fw-bold" style="background-color:rgb(48, 41, 41); ">
+                        <input type="text" name="addTodo" id="" [(ngModel)]="item.name" class="inp-addTodo">
+
                         <span>
-                            <button mat-button [matMenuTriggerFor]="menu" class="float-end"><i class="material-icons text-light" >more_vert</i></button>
-                                    <mat-menu #menu="matMenu">
-                                        <span class="d-flex justify-content-around">
-                                            <button mat-menu-item data-bs-toggle="modal" data-bs-target="#modal"  (click)="editTodo(item)"><i class="material-icons">edit</i></button>
-                                            <button mat-menu-item (click)="deleteTodo(item)"><i class="material-icons">delete</i></button>
-                                        </span>
-                                    </mat-menu>
+                            <button mat-button [matMenuTriggerFor]="menu" class="float-end"><i
+                                    class="material-icons text-light">more_vert</i></button>
+                            <mat-menu #menu="matMenu">
+                                <span class="d-flex justify-content-around">
+                                 
+                                    <i class="material-icons" mat-menubutton-item (click)="editTodo(item)">edit</i>
+                                    <i class="material-icons" mat-menubutton-item (click)="deleteTodo(item)">delete</i>
+                                    <!-- <i class="material-icons" mat-menubutton-item *ngIf="item.isfillTodo" (click)="editTodo(item)">add_circle</i> -->
+                                </span>
+                            </mat-menu>
                         </span>
                     </div>
                     <div>
                         <i class="fa fa-plus" (click)="openInputField(item)" style="padding: 10px;"></i>
                         <span *ngIf="item.isInput">
                             <input type="checkbox" [(ngModel)]="addnewTask.isCompleted">
-                            <input type="text" placeholder="+ add task" class="inp-add" (keyup.enter)="addTask(item.id)"
-                                [(ngModel)]="addnewTask.name">
+                            <input type="text" placeholder="+ add task" class="inp-add" [(ngModel)]="addnewTask.name">
+                            <i class="material-icons" (click)="addTask(item.id)" style="cursor: pointer;">note_add</i>
                         </span>
                     </div>
                     <div style="overflow: auto; height: 200px;">
                         <ng-container *ngFor="let itemData of item.tasks;">
                             <div class="card-body text-dark fw-bold">
-                             
+
                                 <span style="float: right;">
                                     <i class="bi bi-pencil-fill" style="color: green;" (click)="fillTask(itemData)"></i>
                                     <i class="bi bi-x-lg ms-3" (click)="deleteTask(item.id,itemData.id)"
                                         style="color: red;"></i>
-                                </span> 
+                                    <i class="glyphicon glyphicon-saved mt-2"></i>
+                                </span>
 
-                            <div>
-                                <input type="checkbox" class="me-2" [(ngModel)]="itemData.isCompleted" (change)="isTaskCompleted(item.id,itemData)" [checked]="itemData.isCompleted" >
-                                <input type="text" *ngIf="!itemData.isInputTask" [value]="itemData.name" [disabled]="!itemData.isInputTask" style="border: none; background-color: white;">
-                                <input type="text" *ngIf="itemData.isInputTask" [(ngModel)]="editTask.name" (keyup.enter)="updateTask(item.id)">
-                            </div>
+                                <div>
+                                    <input type="checkbox" class="me-2" [(ngModel)]="itemData.isCompleted"
+                                        (change)="isTaskCompleted(item.id,itemData)" [checked]="itemData.isCompleted">
+                                    <input type="text" *ngIf="!itemData.isInputTask" [value]="itemData.name"
+                                        [disabled]="!itemData.isInputTask"
+                                        style="border: none; background-color: white;">
+                                    <input type="text" *ngIf="itemData.isInputTask" [(ngModel)]="editTask.name"
+                                        (keyup.enter)="updateTask(item.id)">
+                                </div>
 
 
 
-                                        <!-- <div class="content">
-                                          <span>
-                                            <i class="bi bi-x-lg ms-3" (click)="deleteTask(item.id,itemData.id)" style="color: red;"  *ngIf="showButton"></i>
-                                         </span>
-                                        </div>
-                                        -->
                             </div>
                         </ng-container>
                     </div>

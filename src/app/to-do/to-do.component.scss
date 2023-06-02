@@ -1,6 +1,11 @@
 .example-spacer {
     flex: 1 1 auto;
 }
+.title-center
+{
+    flex: 1 1 auto;
+    text-align: right;
+}
 .inp-srch {
     box-shadow: 2px 1px 2px 1px rgb(202, 190, 190);
     width: 20vw;
@@ -10,6 +15,16 @@
     height: 20px;
     border: none;
     margin-left: 5px;
+
+}
+.inp-addTodo
+{
+    border: none;
+    background: transparent;
+    color: white;
+    font-weight: bold;
+    margin-top: 9px;
+
 }
 .btn-pencil {
     height: 3.2vh;
@@ -42,8 +57,37 @@
     box-shadow: 0px 0px 5px 0px;
     border: none;
 }
+.mat-mdc-menu-item
+{
+    padding-left: 9px;
+    padding-right: 9px;
+}
+::ng-deep .mat-mdc-menu-panel.mat-mdc-menu-panel {
+    min-width: 100px !important;
+    cursor: pointer;
+}
+.mat-mdc-form-field + .mat-mdc-form-field {
+    margin-left: 8px;
+   
+  }
 
+/////////  Expansible panel Style //////////////
 
+.enterTodo{
+    display: flex ;
+   
+    justify-content: space-around;
+
+  }
+  .addInput
+  {
+    width: 70%;
+    height: 30%;
+  }
+  .mat-expansion-panel
+{
+    width: 30vw;
+}
 // =========================================================================== Media Query ================================================================= //
 
 @media screen and (max-width:320px) {

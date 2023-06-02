@@ -61,6 +61,7 @@ export class Todo {
   addedOn: Date = new Date();
   tasks?: Array<todoTask> = new Array<todoTask>();
   isInput: boolean = false;
+  isfillTodo: boolean = false;
 }
 
 export class todoTask {

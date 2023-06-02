@@ -25,6 +25,7 @@ export class ToDoComponent implements OnInit {
   // clear data after Update
   clear = false;
 
+  panelOpenState = false;
 
   date: Date = new Date();
 
@@ -40,7 +41,7 @@ export class ToDoComponent implements OnInit {
     this.addnewTask = new todoTask;
     this.todo.tasks = new Array<todoTask>;
     this.getTodo();
-    this.addInput();
+    // this.addInput();
   }
   
 
@@ -56,16 +57,16 @@ export class ToDoComponent implements OnInit {
   }
 
   // add new Input Box to add Task
-  addInput() {
-    this.todo.tasks.push(new todoTask());
-  }
+  // addInput() {
+  //   this.todo.tasks.push(new todoTask());
+  // }
 
-  // remove Input Box & Last One display
-  removeInput(i: any) {
-    if (this.todo.tasks.length != 1) {
-      this.todo.tasks.splice(i, 1)
-    }
-  }
+  // // remove Input Box & Last One display
+  // removeInput(i: any) {
+  //   if (this.todo.tasks.length != 1) {
+  //     this.todo.tasks.splice(i, 1)
+  //   }
+  // }
 
   // add Todo
 
@@ -77,12 +78,12 @@ export class ToDoComponent implements OnInit {
         next: (res) => {        
           this.getTodo();
           this.todo = new Todo;
-          this.addInput();
+          // this.addInput();
         },
         error: (err) => { console.log(err) },
         complete: () => {
           console.log('Success')
-          this.toastr.success('Add Task Successfully...');
+          this.toastr.success('Add Todo Successfully...');
         }
       })
     }
@@ -100,12 +101,13 @@ export class ToDoComponent implements OnInit {
       next: (res) => {
         console.log(res)
         this.getTodo();
-        this.todo = new Todo;
-        this.addInput();
+        this.todo = new Todo; 
+        
       },
       error: () => {this.toastr.error('Something Went Wrong...') }, 
       complete: () => { this.toastr.success('Inner Task Added...') }
     })
+
   }
 
   isTaskCompleted(todoId,itemData){
@@ -121,7 +123,6 @@ export class ToDoComponent implements OnInit {
 
   getTodo() {
     this.api.loderShow();
-
     this.api.getTodo().subscribe({
       next: (res) => {
         console.log(res)
@@ -140,7 +141,7 @@ export class ToDoComponent implements OnInit {
         console.log(res)
         this.getTodo();
         this.todo = new Todo();
-        this.addInput();
+        // this.addInput();
       },
       error: (res) => {this.toastr.error('Something Went Wrong...') },
       complete: () => {
@@ -179,7 +180,7 @@ export class ToDoComponent implements OnInit {
         this.getTodo();
         this.todo = new Todo();
         this.isUpdate = true;
-        this.addInput();
+        // this.addInput();
       },
       error: (err) => { this.toastr.success('Something went wrong')},
       complete: () => { this.toastr.success('Update Task Successfully...') }
@@ -227,7 +228,7 @@ export class ToDoComponent implements OnInit {
     this.getTodo();
     this.isUpdate = true;
     this.todo = new Todo;
-    this.addInput();
+   
   }
 
   //Open Input to add task
