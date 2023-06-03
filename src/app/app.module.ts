@@ -14,6 +14,10 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatMenuModule } from '@angular/material/menu';
 import {MatInputModule} from '@angular/material/input';
 import {MatExpansionModule} from '@angular/material/expansion';
+import {MatCardModule} from '@angular/material/card';
+import {MatDividerModule} from '@angular/material/divider';
+import {MatCheckboxModule} from '@angular/material/checkbox';
+
 
 
 
@@ -36,7 +40,10 @@ import {MatExpansionModule} from '@angular/material/expansion';
     MatButtonModule,
     MatMenuModule,
     MatInputModule,
-    MatExpansionModule
+    MatExpansionModule,
+    MatCardModule,
+    MatDividerModule,
+    MatCheckboxModule
     
     
   ],

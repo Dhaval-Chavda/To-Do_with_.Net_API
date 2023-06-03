@@ -1,18 +1,15 @@
-<!--================= Progress Bar =============-->
+<!--================= Progress Bar ==================-->
 
 <div *ngIf="isLoading | async" class="overlay">
     <mat-progress-bar mode="indeterminate" class="spinner" color="warn"></mat-progress-bar>
 </div>
 
 
-                                    <!-- ============================================================================================================
+<!-- ================================================================================================================================================================================
                                                                                     Tool Bar
-                                    =================================================================================================================-->
+    ================================================================================================================================================================================-->
 
 <mat-toolbar color="primary">
-    <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-        <mat-icon>menu</mat-icon>
-    </button>
     <span class="title-center">TODO</span>
     <span class="example-spacer"></span>
 
@@ -24,107 +21,122 @@
     </div>
 </mat-toolbar>
 
-                         <!-- ================================================================================================================================
-                                                                                    Accordian of angular
-                              =================================================================================================================================-->
+<!-- ====================================================================================================================================================================================
+                                                                                  Accordian of angular
+======================================================================================================================================================================================-->
 
 <div class="container mt-5">
     <div class="row">
         <div class="col-12 d-flex justify-content-center">
             <mat-accordion class="">
-             
-                    <div>
-                        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
-                            <mat-expansion-panel-header>
-                                <mat-panel-title class="fs-6 justify-content-center">
-                                    Add Todo
-                                </mat-panel-title>
+                <div>
+                    <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                        <mat-expansion-panel-header>
+                            <mat-panel-title class="fs-6 justify-content-center">
+                                Add Todo
+                            </mat-panel-title>
 
-                            </mat-expansion-panel-header>
-                            <div class="enterTodo">
-                                <mat-form-field appearance="outline" class="addInput">
-                                    <mat-label>Todo</mat-label>
-                                    <input matInput placeholder="Enter Your Todo..." [(ngModel)]="todo.name">
-                                </mat-form-field>
-                                <div class="mt-2">
-                                    <button mat-raised-button color="primary" (click)="addTodo()">Add</button>
-                                </div>
+                        </mat-expansion-panel-header>
+                        <div class="enterTodo">
+                            <mat-form-field appearance="outline" class="addInput">
+                                <mat-label>Todo</mat-label>
+                                <input matInput placeholder="Enter Your Todo..." [(ngModel)]="todo.name">
+                            </mat-form-field>
+                            <div class="mt-2">
+                                <button mat-raised-button color="primary" (click)="addTodo()">Add</button>
                             </div>
+                        </div>
 
-                        </mat-expansion-panel>
-                    </div>
-               
+                    </mat-expansion-panel>
+                </div>
+
             </mat-accordion>
         </div>
     </div>
 </div>
 
 
-
-
-                                    <!-- ============================================================================================================
+<!-- ===================================================================================================================================================================================
                                                                                  Task Content
-                                    =================================================================================================================-->
+  ==================================================================================================================================================================================-->
+
 
 
 <div class="container">
-    <div class="row ">
-        <ng-container *ngFor="let item of allGetTodo">
-            <div class="col-xxl-4 col-xl-4 col-lg-4 col-sm-4 col-md-6 col-12  d-flex justify-content-center mt-5">
-                <div class="card border-dark mb-3 mt-5" style="width: 25rem; height: 20rem; ">
-                    <div class="card-header text-light fw-bold" style="background-color:rgb(48, 41, 41); ">
-                        <input type="text" name="addTodo" id="" [(ngModel)]="item.name" class="inp-addTodo">
+    <div class="row">
+    <ng-container *ngFor="let todo of allGetTodo">
+        <div class="col-xxl-4 col-xl-4 col-lg-4 col-sm-4 col-md-6 col-12">
+            
+            <mat-card class="example-card mt-5">
+                <mat-card-header class="c-header">
+                  <div mat-card-avatar class="example-header-image"></div>
+                  <mat-card-title>{{todo.name}}</mat-card-title>
 
-                        <span>
-                            <button mat-button [matMenuTriggerFor]="menu" class="float-end"><i
-                                    class="material-icons text-light">more_vert</i></button>
-                            <mat-menu #menu="matMenu">
-                                <span class="d-flex justify-content-around">
-                                 
-                                    <i class="material-icons" mat-menubutton-item (click)="editTodo(item)">edit</i>
-                                    <i class="material-icons" mat-menubutton-item (click)="deleteTodo(item)">delete</i>
-                                    <!-- <i class="material-icons" mat-menubutton-item *ngIf="item.isfillTodo" (click)="editTodo(item)">add_circle</i> -->
-                                </span>
-                            </mat-menu>
+               <div>
+                    <button  mat-fab  [matMenuTriggerFor]="menu">
+                        <i class="material-icons text-light">more_vert</i></button>
+                    <mat-menu #menu="matMenu">
+                        <span class="d-flex justify-content-around">
+                            <i class="material-icons" mat-menubutton-item (click)="editTodo(todo)">edit</i>
+                            <i class="material-icons" mat-menubutton-item (click)="deleteTodo(todo)">delete</i>
                         </span>
-                    </div>
+                    </mat-menu>
+                </div>
+                </mat-card-header>
+                
+                <mat-divider></mat-divider>
+                <mat-card-content>
                     <div>
-                        <i class="fa fa-plus" (click)="openInputField(item)" style="padding: 10px;"></i>
-                        <span *ngIf="item.isInput">
+                        <i class="fa fa-plus" (click)="openInputField(todo)" style="padding: 10px;"></i>
+                        <span *ngIf="todo.isInput">
                             <input type="checkbox" [(ngModel)]="addnewTask.isCompleted">
-                            <input type="text" placeholder="+ add task" class="inp-add" [(ngModel)]="addnewTask.name">
-                            <i class="material-icons" (click)="addTask(item.id)" style="cursor: pointer;">note_add</i>
+                            <input type="text"  placeholder="+ add task" class="inp-add" [(ngModel)]="addnewTask.name">
+                            <span class="align-middle">
+                            <!-- <i class="material-icons" (click)="addTask(todo.id)" style="cursor: pointer;">note_add</i> -->
+                            <i class="fa fa-save fs-5 ms-3" (click)="addTask(todo.id)" style="cursor: pointer;"></i>
+                        </span>
                         </span>
                     </div>
+
                     <div style="overflow: auto; height: 200px;">
-                        <ng-container *ngFor="let itemData of item.tasks;">
-                            <div class="card-body text-dark fw-bold">
 
-                                <span style="float: right;">
-                                    <i class="bi bi-pencil-fill" style="color: green;" (click)="fillTask(itemData)"></i>
-                                    <i class="bi bi-x-lg ms-3" (click)="deleteTask(item.id,itemData.id)"
-                                        style="color: red;"></i>
-                                    <i class="glyphicon glyphicon-saved mt-2"></i>
-                                </span>
+                        <ng-container *ngFor="let todoTasks of todo.tasks">
 
-                                <div>
-                                    <input type="checkbox" class="me-2" [(ngModel)]="itemData.isCompleted"
-                                        (change)="isTaskCompleted(item.id,itemData)" [checked]="itemData.isCompleted">
-                                    <input type="text" *ngIf="!itemData.isInputTask" [value]="itemData.name"
-                                        [disabled]="!itemData.isInputTask"
-                                        style="border: none; background-color: white;">
-                                    <input type="text" *ngIf="itemData.isInputTask" [(ngModel)]="editTask.name"
-                                        (keyup.enter)="updateTask(item.id)">
+                            <div class="p-1">
+
+                                <div class="">
+                                    <!-- <input type="checkbox" class="me-2" [(ngModel)]="todoTasks.isCompleted"
+                                        (change)="isTaskCompleted(todo.id,todoTasks)" [checked]="todoTasks.isCompleted"> -->
+
+                                     <mat-checkbox color="primary" class="example-margin" [(ngModel)]="todoTasks.isCompleted" (change)="isTaskCompleted(todo.id,todoTasks)" [checked]="todoTasks.isCompleted"> </mat-checkbox>
+
+                                    <!-- <input type="text" *ngIf="!todoTasks.isInputTask" [value]="todoTasks.name"
+                                        [disabled]="!todoTasks.isInputTask"
+                                        style="border: none; background-color: white;"> -->
+                                         
+                                        <span class="taskName"  *ngIf="!todoTasks.isInputTask">{{todoTasks.name}}</span>
+                                    
+                                        <input type="text" *ngIf="todoTasks.isInputTask" [(ngModel)]="editTask.name"
+                                        (keyup.enter)="updateTask(todo.id)">
+
+                                        <span style="float: right;">
+                                            <i class="material-icons" (click)="fillTask(todoTasks)" style="color: green;">edit</i>
+                                            <i class="material-icons ms-3" (click)="deleteTask(todo.id,todoTasks.id)"  style="color: red;">close</i>
+                                        </span>
                                 </div>
-
-
-
                             </div>
                         </ng-container>
                     </div>
-                    <div class="card-footer bg-transparent text-muted">{{date.toDateString()}}</div>
-                </div>
-            </div>
-        </ng-container>
-    </div>
+                </mat-card-content>
+                <mat-divider></mat-divider>
+                <div class="card-footer">
+               <mat-card-footer>
+                {{todo.addedOn | date}}
+               </mat-card-footer>
+               </div>
+              </mat-card>
+           
+        </div>
+    </ng-container>
+    </div> 
 </div>

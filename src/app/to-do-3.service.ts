@@ -1,7 +1,7 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { environment } from 'src/evironment/config';
+import { environment } from 'src/app/evironment/config';
 
 
 @Injectable({
@@ -59,7 +59,7 @@ export class Todo {
   id: number;
   name: string;     //Todo Title
   addedOn: Date = new Date();
-  tasks?: Array<todoTask> = new Array<todoTask>();
+  tasks: Array<todoTask> = new Array<todoTask>();
   isInput: boolean = false;
   isfillTodo: boolean = false;
 }

@@ -45,14 +45,14 @@ export class ToDoComponent implements OnInit {
   }
   
 
-  fillTask(task){
-    this.editTask = task;
+  fillTask(todoTasks){
+    this.editTask = todoTasks;
 
-    if(task.isInputTask){
-      task.isInputTask = false;
+    if(todoTasks.isInputTask){
+      todoTasks.isInputTask = false;
     }
     else{
-      task.isInputTask = true;
+      todoTasks.isInputTask = true;
     }
   }
 
@@ -110,8 +110,8 @@ export class ToDoComponent implements OnInit {
 
   }
 
-  isTaskCompleted(todoId,itemData){
-    this.api.updateTask(todoId, itemData).subscribe({
+  isTaskCompleted(todoId,todoTask){
+    this.api.updateTask(todoId, todoTask).subscribe({
       next: (res) => {
         console.log(res)
         this.getTodo();
@@ -128,8 +128,8 @@ export class ToDoComponent implements OnInit {
         console.log(res)
         this.allGetTodo = res
       },
-      error: (_err) => {this.api.loderShow()},
-      complete: () => {this.api.loderHide() }
+      error: (_err) => {},
+      complete: () => {this.api.loderHide()}
     })
   }
 
@@ -143,10 +143,8 @@ export class ToDoComponent implements OnInit {
         this.todo = new Todo();
         // this.addInput();
       },
-      error: (res) => {this.toastr.error('Something Went Wrong...') },
-      complete: () => {
-        this.toastr.success('Delete All Task Successfully...');
-      }
+      error: (res) => {this.toastr.error('Something Went Wrong...')},
+      complete: () => {this.toastr.success('Delete All Task Successfully...')}
     })
   }
 
