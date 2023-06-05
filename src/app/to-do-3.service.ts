@@ -58,10 +58,11 @@ export class ToDo3Service {
 export class Todo {
   id: number;
   name: string;     //Todo Title
-  addedOn: Date = new Date();
+  addedon: Date = new Date();
   tasks: Array<todoTask> = new Array<todoTask>();
   isInput: boolean = false;
   isfillTodo: boolean = false;
+  isEditInput: boolean;
 }
 
 export class todoTask {

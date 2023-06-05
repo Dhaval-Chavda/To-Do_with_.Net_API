@@ -13,7 +13,6 @@ export class ToDoComponent implements OnInit {
 
   //Todo Get all Title Data
   allGetTodo: Array<Todo> = new Array<Todo>();
-
   todo: Todo;
   //add inner new task
   addnewTask: todoTask;
@@ -56,18 +55,6 @@ export class ToDoComponent implements OnInit {
     }
   }
 
-  // add new Input Box to add Task
-  // addInput() {
-  //   this.todo.tasks.push(new todoTask());
-  // }
-
-  // // remove Input Box & Last One display
-  // removeInput(i: any) {
-  //   if (this.todo.tasks.length != 1) {
-  //     this.todo.tasks.splice(i, 1)
-  //   }
-  // }
-
   // add Todo
 
   addTodo() {
@@ -80,9 +67,8 @@ export class ToDoComponent implements OnInit {
           this.todo = new Todo;
           // this.addInput();
         },
-        error: (err) => { console.log(err) },
-        complete: () => {
-          console.log('Success')
+        error: (err) => {console.log(err)},
+        complete: () => {console.log('Success')
           this.toastr.success('Add Todo Successfully...');
         }
       })
@@ -101,11 +87,10 @@ export class ToDoComponent implements OnInit {
       next: (res) => {
         console.log(res)
         this.getTodo();
-        this.todo = new Todo; 
-        
+        this.todo = new Todo;  
       },
       error: () => {this.toastr.error('Something Went Wrong...') }, 
-      complete: () => { this.toastr.success('Inner Task Added...') }
+      complete: () => {this.toastr.success('Inner Task Added...') }
     })
 
   }
@@ -196,6 +181,8 @@ export class ToDoComponent implements OnInit {
         }
       })
   }
+
+  
 
   // Search Todo & Task
   searchTodo() {

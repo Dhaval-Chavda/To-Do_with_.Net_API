@@ -89,11 +89,10 @@
                     <div>
                         <i class="fa fa-plus" (click)="openInputField(todo)" style="padding: 10px;"></i>
                         <span *ngIf="todo.isInput">
-                            <input type="checkbox" [(ngModel)]="addnewTask.isCompleted">
+                            <!-- <input type="checkbox" [(ngModel)]="addnewTask.isCompleted"> -->
                             <input type="text"  placeholder="+ add task" class="inp-add" [(ngModel)]="addnewTask.name">
                             <span class="align-middle">
-                            <!-- <i class="material-icons" (click)="addTask(todo.id)" style="cursor: pointer;">note_add</i> -->
-                            <i class="fa fa-save fs-5 ms-3" (click)="addTask(todo.id)" style="cursor: pointer;"></i>
+                            <i class="material-icons mt-1 ms-2"  (click)="addTask(todo.id)" style="cursor: pointer;">add_box</i>
                         </span>
                         </span>
                     </div>
@@ -104,7 +103,7 @@
 
                             <div class="p-1">
 
-                                <div class="">
+                                <div class="align-middle">
                                     <!-- <input type="checkbox" class="me-2" [(ngModel)]="todoTasks.isCompleted"
                                         (change)="isTaskCompleted(todo.id,todoTasks)" [checked]="todoTasks.isCompleted"> -->
 
@@ -120,8 +119,13 @@
                                         (keyup.enter)="updateTask(todo.id)">
 
                                         <span style="float: right;">
-                                            <i class="material-icons" (click)="fillTask(todoTasks)" style="color: green;">edit</i>
-                                            <i class="material-icons ms-3" (click)="deleteTask(todo.id,todoTasks.id)"  style="color: red;">close</i>
+                                            <i class="material-icons edit-btn-task" *ngIf="todoTasks.isInputTask"  (click)="fillTask(todoTasks)" style="color: green;">edit</i>
+                                            <i class="material-icons " *ngIf="todoTasks.isInputTask"  (click)="updateTask(todo.id)">save</i>
+
+                                            <i class="material-icons ms-3 edit-btn-delete" (click)="fillTask(todoTasks)">edit</i>
+                                            <i class="material-icons ms-3 edit-btn-delete" (click)="deleteTask(todo.id,todoTasks.id)"  style="color: red;">close</i>
+                                            
+
                                         </span>
                                 </div>
                             </div>
@@ -131,7 +135,7 @@
                 <mat-divider></mat-divider>
                 <div class="card-footer">
                <mat-card-footer>
-                {{todo.addedOn | date}}
+                {{todo.addedon | date}}
                </mat-card-footer>
                </div>
               </mat-card>
